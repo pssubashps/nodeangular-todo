@@ -26,17 +26,32 @@ app.use(express.static(path.join(__dirname + '/public')));                 // se
     // listen (start app with node server.js) ======================================
     app.listen(1337);
     console.log("App listening on port 8080");
-   
-app.get('/api/all',function(req,res){
-     mysqlConnection.query( 'SELECT id,taskname as name FROM tbl_task', function(err, rows){
-        res.json(rows);
-         console.log(rows);
-	});
-     res.header("Cache-Control", "no-cache, no-store, must-revalidate");
-    res.header("Pragma", "no-cache");
-    res.header("Expires", 0);
+                   
+     app.get('/api/all',function(req,res){
+        mysqlConnection.query( 'SELECT id,taskname as name FROM tbl_task', function(err, rows){
+            res.json(rows);
+            console.log(rows);
+	   });
+        res.header("Cache-Control", "no-cache, no-store, must-revalidate");
+        res.header("Pragma", "no-cache");
+        res.header("Expires", 0);
 	
-});
+    });
+
+    //Create API
+    app.post('/api/todo/create',function(req, res){
+         mysqlConnection.query( 'INSERT INTO tbl_task(`taskname`) VALUES("'+req.body.name+'")', function(err){
+           
+            
+       });
+
+       res.json("{'data':'ok'}");
+        res.header("Cache-Control", "no-cache, no-store, must-revalidate");
+        res.header("Pragma", "no-cache");
+        res.header("Expires", 0);
+     
+
+    });
 app.get('/', function(req, res) {
         res.sendfile('public/index.html'); // load the single view file (angular will handle the page changes on the front-end)
     });
