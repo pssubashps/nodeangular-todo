@@ -31,3 +31,9 @@ node server.js
 
 open browser
 	http://localhost:1337/
+	
+	
+	
+Please log issues or comments
+
+keep watching this space..
