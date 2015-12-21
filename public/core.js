@@ -5,7 +5,7 @@ function mainController ($scope, $http) {
 	$scope.todos = [];
 	$http.get('/api/all')
         .success(function(data) {
-            $scope.todos= data.data;
+            $scope.todos= data;
             console.log(data);
         })
         .error(function(data) {

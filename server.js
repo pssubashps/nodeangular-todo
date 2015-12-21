@@ -4,6 +4,15 @@ var morgan = require('morgan');             // log requests to the console (expr
 var bodyParser = require('body-parser');    // pull information from HTML POST (express4)
 var methodOverride = require('method-override'); // simulate DELETE and PUT (express4)
 var path = require('path');
+var mysql      = require('mysql');
+var mysqlConnection = mysql.createConnection({
+  host     : 'localhost',
+  user     : 'root',
+  password : 'root',
+  database : 'node1'
+});
+
+mysqlConnection.connect();
     // configuration =================
 
 //mongoose.connect('mongodb://node:nodeuser@mongo.onmodulus.net:27017/uwO3mypu');     // connect to mongoDB database on modulus.io
@@ -19,11 +28,14 @@ app.use(express.static(path.join(__dirname + '/public')));                 // se
     console.log("App listening on port 8080");
    
 app.get('/api/all',function(req,res){
-	data = {'data':[{'name':'list1'},{'name':'list2'}]};
-	res.header("Cache-Control", "no-cache, no-store, must-revalidate");
+     mysqlConnection.query( 'SELECT id,taskname as name FROM tbl_task', function(err, rows){
+        res.json(rows);
+         console.log(rows);
+	});
+     res.header("Cache-Control", "no-cache, no-store, must-revalidate");
     res.header("Pragma", "no-cache");
     res.header("Expires", 0);
-	res.json(data);
+	
 });
 app.get('/', function(req, res) {
         res.sendfile('public/index.html'); // load the single view file (angular will handle the page changes on the front-end)
